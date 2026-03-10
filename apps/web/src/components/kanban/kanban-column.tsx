@@ -42,12 +42,14 @@ const EmptyState = ({ variant }: { variant: KanbanColumnDef["variant"] }) => {
   const variantStyles = columnVariants[variant];
 
   return (
-    <div className="flex flex-col items-center justify-center py-24">
+    <div className="flex flex-col items-center justify-center py-20">
       <EmptyIcon
-        className={cn("h-8 w-8", variantStyles.icon, "opacity-70")}
+        className={cn("h-10 w-10", variantStyles.icon, "opacity-40")}
         strokeWidth={1}
       />
-      <span className="text-muted-foreground mt-2 text-sm">Empty</span>
+      <span className="text-muted-foreground mt-3 text-sm font-medium">
+        Empty
+      </span>
     </div>
   );
 };
@@ -64,25 +66,32 @@ export const KanbanColumn = ({ column, onTaskClick }: KanbanColumnProps) => {
   return (
     <div
       className={cn(
-        "flex h-full min-w-48 flex-1 flex-col rounded-lg p-2",
+        "flex h-full min-w-[200px] flex-1 flex-col rounded-2xl p-2.5 transition-colors duration-200",
         variant.column,
       )}
     >
       {/* Header */}
-      <div className="mb-2 flex w-full items-center gap-2">
-        <IconComponent
-          className={cn("h-4 w-4", variant.icon)}
-          strokeWidth={2}
-        />
+      <div className="mb-3 flex w-full items-center gap-2.5 px-1">
+        <div
+          className={cn(
+            "flex h-7 w-7 items-center justify-center rounded-lg",
+            variant.iconBg,
+          )}
+        >
+          <IconComponent
+            className={cn("h-4 w-4", variant.icon)}
+            strokeWidth={2}
+          />
+        </div>
         <span
           className={cn(
-            "rounded-full px-2 py-0.5 text-xs font-medium",
+            "rounded-lg px-2.5 py-1 text-xs font-semibold",
             variant.badge,
           )}
         >
           {column.title}
         </span>
-        <span className="text-muted-foreground ml-auto text-sm font-medium">
+        <span className="text-muted-foreground ml-auto text-sm font-medium tabular-nums">
           {column.tasks.length}
         </span>
       </div>
@@ -92,7 +101,7 @@ export const KanbanColumn = ({ column, onTaskClick }: KanbanColumnProps) => {
         {column.tasks.length === 0 ? (
           <EmptyState variant={column.variant} />
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             {column.tasks.map((task) => (
               <KanbanCard key={task.id} task={task} onTaskClick={onTaskClick} />
             ))}
