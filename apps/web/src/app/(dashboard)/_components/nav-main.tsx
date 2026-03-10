@@ -14,7 +14,7 @@ import {
 import { cn } from "@clawe/ui/lib/utils";
 
 export const sidebarMenuButtonActiveStyles =
-  "font-normal data-[active=true]:bg-transparent data-[active=true]:font-normal data-[active=true]:text-pink-600 data-[active=true]:hover:bg-pink-600/5 dark:data-[active=true]:bg-transparent dark:data-[active=true]:text-pink-400 dark:data-[active=true]:hover:bg-pink-400/5";
+  "font-medium data-[active=true]:bg-primary/10 data-[active=true]:text-primary data-[active=true]:hover:bg-primary/15 dark:data-[active=true]:bg-primary/20 dark:data-[active=true]:text-primary-foreground dark:data-[active=true]:hover:bg-primary/25";
 
 export interface NavItem {
   title: string;
@@ -38,7 +38,7 @@ export const NavMain = ({ items }: NavMainProps) => {
   };
 
   return (
-    <SidebarGroup className="group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:px-0">
+    <SidebarGroup className="group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:px-2">
       <SidebarMenu>
         {items.map((item) => {
           const content = (
@@ -60,7 +60,7 @@ export const NavMain = ({ items }: NavMainProps) => {
                         children: (
                           <>
                             {item.title}{" "}
-                            <span className="text-background/70 text-xs">
+                            <span className="text-muted-foreground/70 text-xs">
                               ({item.badge})
                             </span>
                           </>
@@ -69,7 +69,7 @@ export const NavMain = ({ items }: NavMainProps) => {
                     : item.title
                 }
                 className={cn(sidebarMenuButtonActiveStyles, {
-                  "cursor-default opacity-50 hover:bg-transparent":
+                  "cursor-default opacity-50 hover:bg-transparent hover:text-foreground":
                     item.disabled,
                 })}
               >
@@ -80,7 +80,7 @@ export const NavMain = ({ items }: NavMainProps) => {
                 )}
               </SidebarMenuButton>
               {item.badge && (
-                <SidebarMenuBadge className="bg-muted text-muted-foreground! rounded px-1.5 text-[10px] font-medium">
+                <SidebarMenuBadge className="bg-muted text-muted-foreground! rounded-lg px-2 text-[10px] font-semibold">
                   {item.badge}
                 </SidebarMenuBadge>
               )}
