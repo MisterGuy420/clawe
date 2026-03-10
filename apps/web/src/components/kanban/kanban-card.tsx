@@ -29,10 +29,10 @@ export type KanbanCardProps = {
 };
 
 const priorityStyles = {
-  high: "bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400",
+  high: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20",
   medium:
-    "bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400",
-  low: "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400",
+    "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20",
+  low: "bg-slate-500/10 text-slate-600 dark:text-slate-400 border border-slate-500/20",
 };
 
 export const KanbanCard = ({
@@ -59,22 +59,24 @@ export const KanbanCard = ({
     <div className="w-full">
       <div
         onClick={handleCardClick}
-        className="bg-background cursor-pointer overflow-hidden rounded-lg border border-gray-900/10 p-3 transition-colors hover:bg-gray-50 dark:border-zinc-700 dark:hover:bg-zinc-900"
+        className="bg-card cursor-pointer overflow-hidden rounded-xl border border-border/60 p-3.5 transition-all duration-200 hover:border-primary/30 hover:shadow-md hover:shadow-primary/5 dark:hover:border-primary/40"
       >
         {/* Parent title for subtasks */}
         {isSubtask && parentTitle && (
-          <p className="mb-1 truncate text-xs text-gray-400">{parentTitle}</p>
+          <p className="mb-1.5 truncate text-xs font-medium text-muted-foreground/70">
+            {parentTitle}
+          </p>
         )}
 
         {/* Title */}
-        <h3 className="text-sm leading-snug font-medium text-gray-900 dark:text-gray-100">
+        <h3 className="text-sm leading-snug font-medium text-foreground">
           {task.title}
         </h3>
 
         {/* Description */}
         {task.description && (
           <div className="mt-2">
-            <p className="line-clamp-2 text-xs text-gray-500 dark:text-gray-400">
+            <p className="line-clamp-2 text-xs text-muted-foreground/80">
               {task.description}
             </p>
           </div>
@@ -82,24 +84,24 @@ export const KanbanCard = ({
 
         {/* Metadata row: popover button on left, priority & assignee on right */}
         {(task.description || showMetadata) && (
-          <div className="mt-1.5 flex items-center justify-between">
+          <div className="mt-2 flex items-center justify-between">
             {task.description ? (
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="hover:bg-muted h-fit w-0 p-1.5"
+                    className="hover:bg-muted h-fit w-0 p-1.5 hover:text-foreground"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <AlignLeft className="h-4 w-4 text-gray-400" />
+                    <AlignLeft className="h-4 w-4 text-muted-foreground/60" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent
                   side="right"
                   align="center"
-                  className="w-80 bg-white dark:bg-zinc-900"
+                  className="w-80 bg-popover"
                 >
-                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                  <p className="text-sm text-foreground/90">
                     {task.description}
                   </p>
                 </PopoverContent>
@@ -112,7 +114,7 @@ export const KanbanCard = ({
               {task.priority === "high" && (
                 <span
                   className={cn(
-                    "rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase",
+                    "rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
                     priorityStyles[task.priority],
                   )}
                 >
@@ -121,9 +123,9 @@ export const KanbanCard = ({
               )}
 
               {task.assignee && (
-                <span className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+                <span className="flex items-center gap-1 text-xs text-muted-foreground/70">
                   <User className="h-3 w-3" />
-                  {task.assignee}
+                  <span className="truncate max-w-[80px]">{task.assignee}</span>
                 </span>
               )}
             </div>
@@ -138,12 +140,12 @@ export const KanbanCard = ({
                 <Button
                   variant="ghost"
                   onClick={handleToggleClick}
-                  className="h-auto gap-1 p-1 px-1.5! text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  className="h-auto gap-1 p-1.5! text-xs text-muted-foreground/70 hover:text-foreground"
                 >
                   {expanded ? (
-                    <ChevronDown className="h-3 w-3" />
+                    <ChevronDown className="h-3.5 w-3.5" />
                   ) : (
-                    <ChevronRight className="h-3 w-3" />
+                    <ChevronRight className="h-3.5 w-3.5" />
                   )}
                   {task.subtasks.filter((st) => st.done).length}/
                   {task.subtasks.length} subtask
@@ -152,8 +154,8 @@ export const KanbanCard = ({
               )}
 
               {task.documentCount && task.documentCount > 0 && (
-                <span className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
-                  <FileText className="h-3 w-3" />
+                <span className="flex items-center gap-1 text-xs text-muted-foreground/70">
+                  <FileText className="h-3.5 w-3.5" />
                   {task.documentCount} doc
                   {task.documentCount !== 1 && "s"}
                 </span>
@@ -164,7 +166,7 @@ export const KanbanCard = ({
 
       {/* Expanded subtasks */}
       {expanded && hasSubtasks && (
-        <ul className="mt-2 ml-3 space-y-1">
+        <ul className="mt-2 ml-2 space-y-1 border-l-2 border-border/50 pl-3">
           {task.subtasks.map((subtask) => {
             const status =
               subtask.status ?? (subtask.done ? "done" : "pending");
@@ -172,22 +174,22 @@ export const KanbanCard = ({
               <li
                 key={subtask.id}
                 className={cn(
-                  "flex items-center gap-2 rounded-md px-2 py-1 text-xs",
+                  "flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs transition-colors duration-150",
                   status === "done" && "text-muted-foreground",
-                  status === "blocked" && "text-red-600 dark:text-red-400",
+                  status === "blocked" && "text-rose-600 dark:text-rose-400 bg-rose-500/5",
                 )}
               >
                 {status === "done" && (
-                  <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-green-500" />
+                  <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
                 )}
                 {status === "in_progress" && (
                   <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin text-blue-500" />
                 )}
                 {status === "blocked" && (
-                  <AlertTriangle className="h-3.5 w-3.5 shrink-0 text-red-500" />
+                  <AlertTriangle className="h-3.5 w-3.5 shrink-0 text-rose-500" />
                 )}
                 {status === "pending" && (
-                  <Circle className="text-muted-foreground h-3.5 w-3.5 shrink-0" />
+                  <Circle className="text-muted-foreground/40 h-3.5 w-3.5 shrink-0" />
                 )}
                 <span className={status === "done" ? "line-through" : ""}>
                   {subtask.title}
